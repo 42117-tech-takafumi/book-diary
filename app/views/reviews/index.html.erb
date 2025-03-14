@@ -1,0 +1,20 @@
+<%= form_with url: search_reviews_path, method: :get do |f| %>
+  <%= f.text_field :title_query, placeholder: "検索する本のタイトル" %><br>
+  <%= f.text_field :isbn_query, placeholder: "検索する本のisbn" %>
+  <%= f.submit "検索" %>
+<% end %>
+
+<% if @books.present? %>
+  <% @books.each do |book| %>
+    <div>
+      <h2><%= book["Item"]["title"] %></h2>
+      <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover">
+      <p>著者: <%= book["Item"]["author"] %></p>
+      <p>ジャンルid: <%= book["Item"]["booksGenreId"] %></p>
+      <p>ジャンル名: <%= book["Item"]["booksGenreName"] %></p>
+      <p>isbn: <%= book["Item"]["isbn"] %></p>
+      <p>出版社: <%= book["Item"]["publisherName"] %></p>
+      <p>説明: <%= book["Item"]["itemCaption"] %></p>
+    </div>
+  <% end %>
+<% end %>
