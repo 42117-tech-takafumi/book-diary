@@ -11,8 +11,12 @@ class CreateReviews < ActiveRecord::Migration[7.1]
       t.integer :rating, null: false
       t.text :item_caption
       t.text :comment, null: false
-      #t.references :user, null: false, foreign_key: true
+      t.references :user, null: false, foreign_key: true
       t.timestamps
     end
+
+    #isbnは一意の値しか保存できないようにする
+    add_index :reviews, :isbn, unique: true
+
   end
 end
