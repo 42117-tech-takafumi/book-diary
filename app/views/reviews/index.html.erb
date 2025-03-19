@@ -1,20 +1,61 @@
-<%= form_with url: search_reviews_path, method: :get do |f| %>
-  <%= f.text_field :title_query, placeholder: "検索する本のタイトル" %><br>
-  <%= f.text_field :isbn_query, placeholder: "検索する本のisbn" %>
-  <%= f.submit "検索" %>
+<% if @error_message.present? %>
+  <div class = "index_error_message" ><%= @error_message %></div>
+<% end %>
+
+<div class = "index_search_form" >
+  <%= form_with url: search_reviews_path, method: :get do |f| %>
+    <%= f.text_field :title_query, placeholder: "タイトル" , class:"index_text_field" %>
+    <%= f.text_field :author_query, placeholder: "著者" , class:"index_text_field" %>
+    <%= f.text_field :isbn_query, placeholder: "isbn" , class:"index_text_field" %><br>
+    <%= f.hidden_field :page, value: 1 %>
+    <%= f.submit "検索" , class:"index_submit_button" %>
+  <% end %>
+</div>
+
+<% if @book_counts.present? %>
+  <div class = "index_book_counts" ><%= @book_counts[:total_hits] %>件ヒット <%= @book_counts[:page] %>/ <%= @book_counts[:total_pages] %>ページ</div>
+  <br>
 <% end %>
 
 <% if @books.present? %>
+
   <% @books.each do |book| %>
-    <div>
-      <h2><%= book["Item"]["title"] %></h2>
-      <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover">
-      <p>著者: <%= book["Item"]["author"] %></p>
-      <p>ジャンルid: <%= book["Item"]["booksGenreId"] %></p>
-      <p>ジャンル名: <%= book["Item"]["booksGenreName"] %></p>
-      <p>isbn: <%= book["Item"]["isbn"] %></p>
-      <p>出版社: <%= book["Item"]["publisherName"] %></p>
-      <p>説明: <%= book["Item"]["itemCaption"] %></p>
+    <div class = "index_book" >
+      <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class = "index_book_img" >
+      <div class = "index_book_info" >
+        <h2><%= book["Item"]["title"] %></h2>
+        <p>著者: <%= book["Item"]["author"] %></p>
+        <p>ジャンル: <%= book["Item"]["booksGenreName"] %></p>
+        <p>isbn: <%= book["Item"]["isbn"] %></p>
+        <p>出版社: <%= book["Item"]["publisherName"] %></p>
+      </div>
     </div>
   <% end %>
+
+  <div class="index_page_nav">
+    <% if @search_params[:page] != "1" %>
+      <div class = "index_page_before" >
+        <%= form_with url: search_reviews_path, method: :get do |f| %>
+          <%= f.hidden_field :title_query, value: @search_params[:title_query] %>
+          <%= f.hidden_field :author_query, value: @search_params[:author_query] %>
+          <%= f.hidden_field :isbn_query, value: @search_params[:isbn_query] %>
+          <%= f.hidden_field :page, value: (@search_params[:page].to_i - 1) %>
+          <%= f.submit "前のページへ" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if @search_params[:page].to_i != @book_counts[:total_pages] %>
+      <div class = "index_page_next" >
+      <%= form_with url: search_reviews_path, method: :get do |f| %>
+        <%= f.hidden_field :title_query, value: @search_params[:title_query] %>
+        <%= f.hidden_field :author_query, value: @search_params[:author_query] %>
+        <%= f.hidden_field :isbn_query, value: @search_params[:isbn_query] %>
+        <%= f.hidden_field :page, value: (@search_params[:page].to_i + 1)  %>
+        <%= f.submit "次のページへ" %>
+      <% end %>
+      </div>
+    <% end %>
+  </div>
+
 <% end %>
