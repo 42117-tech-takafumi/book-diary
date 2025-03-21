@@ -46,13 +46,25 @@
 }
 
 .index_book_img {
-  width: 120px; /* 画像サイズ */
-  height: auto;
-  border-radius: 5px;
+  width: 170px; /* すべての画像を同じ幅に */
+  height: 240px; /* 高さも統一 */
+  object-fit: cover; /* 画像が枠内に収まるように調整 */
+  border-radius: 8px; /* 角を少し丸める */
 }
 
 .index_book_info {
+  width: 60%;
   text-align: left;
+}
+
+.index_book h2 {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.index_book p {
+  font-size: 14px;
+  margin: 5px 0;
 }
 
 
