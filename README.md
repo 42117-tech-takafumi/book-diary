@@ -17,13 +17,14 @@
 | Column                 | Type       | Options     |
 | ---------------------- | ---------- | ----------- |
 | title                  | string     | null: false |
+| image_url              | string     |             |
 | author                 | string     | null: false |
 | publisher_name         | string     | null: false |
 | isbn                   | string     |             |
 | books_genre_id         | string     |             |
-| genre_id1              | string     |             |
-| genre_id2              | string     |             |
-| rating                 | integer    | null: false |
+| books_genre_name       | string     |             |
+| tag_id1                | string     |             |
+| tag_id2                | string     |             |
 | item_caption           | text       |             |
 | comment                | text       | null: false |
 | user                   | references | null: false, foreign_key: true |

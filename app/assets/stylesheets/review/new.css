@@ -1,0 +1,92 @@
+
+/* 全体のスタイル */
+.review_new_box {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 書籍情報のスタイル */
+.review_new_book {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.review_new_book img {
+  width: 120px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.review_new_book h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.review_new_book p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* フォームのスタイル */
+form {
+  margin-top: 20px;
+}
+
+.new_item {
+  margin-bottom: 15px;
+}
+
+.new_item div {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.genre-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* テキストエリアのスタイル */
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* ボタンのスタイル */
+.new_submit_button, .new_page_back form input[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.new_submit_button:hover, .new_page_back form input[type="submit"]:hover {
+  background: #0056b3;
+}
+
+/* 戻るボタン */
+.new_page_back {
+  margin-top: 15px;
+  text-align: center;
+}

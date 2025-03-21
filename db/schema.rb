@@ -13,19 +13,19 @@
 ActiveRecord::Schema[7.1].define(version: 2025_03_17_082719) do
   create_table "reviews", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title", null: false
+    t.string "image_url"
     t.string "author", null: false
     t.string "publisher_name", null: false
     t.string "isbn"
     t.string "books_genre_id"
-    t.string "genre_id1"
-    t.string "genre_id2"
-    t.integer "rating", null: false
+    t.string "books_genre_name"
+    t.integer "tag_id1"
+    t.integer "tag_id2"
     t.text "item_caption"
     t.text "comment", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["isbn"], name: "index_reviews_on_isbn", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 

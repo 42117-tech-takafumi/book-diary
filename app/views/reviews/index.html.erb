@@ -13,7 +13,9 @@
 </div>
 
 <% if @book_counts.present? %>
-  <div class = "index_book_counts" ><%= @book_counts[:total_hits] %>件ヒット <%= @book_counts[:page] %>/ <%= @book_counts[:total_pages] %>ページ</div>
+  <div class = "index_book_counts" >
+    <%= @book_counts[:total_hits] %>件ヒット <%= @book_counts[:page] %>/<%= @book_counts[:total_pages] %>ページ
+  </div>
   <br>
 <% end %>
 
@@ -21,13 +23,29 @@
 
   <% @books.each do |book| %>
     <div class = "index_book" >
-      <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class = "index_book_img" >
+      <% if user_signed_in? %>
+        <%= link_to new_review_path( book: book,title_query: @search_params[:title_query],author_query: @search_params[:author_query],isbn_query: @search_params[:isbn_query],page: @search_params[:page]), class: "index_book_img_link" do %>
+          <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
+        <% end %>
+      <% else %>
+        <%= link_to new_user_session_path, class: "index_book_img_link" do %>
+          <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
+        <% end %>
+      <% end %>
       <div class = "index_book_info" >
-        <h2><%= book["Item"]["title"] %></h2>
+        <% if user_signed_in? %>
+          <%= link_to new_review_path( book: book,title_query: @search_params[:title_query],author_query: @search_params[:author_query],isbn_query: @search_params[:isbn_query],page: @search_params[:page]), class: "index_book_img_link" do %>
+            <h2><%= book["Item"]["title"] %></h2>
+          <% end %>
+        <% else %>
+          <%= link_to new_user_session_path, class: "index_book_img_link" do %>
+            <h2><%= book["Item"]["title"] %></h2>
+          <% end %>
+        <% end %>
         <p>著者: <%= book["Item"]["author"] %></p>
-        <p>ジャンル: <%= book["Item"]["booksGenreName"] %></p>
-        <p>isbn: <%= book["Item"]["isbn"] %></p>
         <p>出版社: <%= book["Item"]["publisherName"] %></p>
+        <p>isbn: <%= book["Item"]["isbn"] %></p>
+        <p>ジャンル: <%= book["Item"]["booksGenreName"] %></p>
       </div>
     </div>
   <% end %>
