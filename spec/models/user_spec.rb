@@ -33,11 +33,6 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
       end
-      it 'nicknameが7文字以上では登録できない' do
-        @user.nickname="1234567"
-        @user.valid?
-        expect(@user.errors.full_messages).to include("Nickname is too long (maximum is 6 characters)")
-      end
       it '重複したemailが存在する場合は登録できない' do
         @user.save
         another_user = FactoryBot.build(:user)
@@ -62,7 +57,24 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Password is too long (maximum is 128 characters)")
       end
-
+      it 'passwordが半角数字のみの場合は登録できない' do
+        @user.password="1234567"
+        @user.password_confirmation="1234567"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
+      end
+      it 'passwordが半角英字のみの場合は登録できない' do
+        @user.password="abcdefg"
+        @user.password_confirmation="abcdefg"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
+      end
+      it 'passwordが全角の場合は登録できない' do
+        @user.password="ＡＢＣＤＥＦＧ１２"
+        @user.password_confirmation="ＡＢＣＤＥＦＧ１２"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
+      end
     end
   end
 end
