@@ -1,6 +1,7 @@
 class ReviewsController < ApplicationController
-  before_action :authenticate_user! , only: [:new]
+  before_action :authenticate_user! , only: [:new,:create,:show]
   before_action :set_search_params , only: [:new,:create]
+  before_action :set_review , only: [:show]
 
   def index
     
@@ -55,6 +56,18 @@ class ReviewsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+  
+  def show
+    
+  end
+
+  def edit
+
+  end
+
+  def destroy
+
+  end
 
   private
 
@@ -63,6 +76,10 @@ class ReviewsController < ApplicationController
     filtered_params.permit(:title,:image_url,:author,:publisher_name,:isbn,:books_genre_id,:books_genre_name,:tag_id1,:tag_id2,:item_caption,:comment).merge(user_id: current_user.id)
   end
 
+  def set_review
+    @review = Review.find(params[:id])
+  end
+  
   def set_search_params
     @search_params = {title_query:params[:title_query],author_query:params[:author_query],isbn_query:params[:isbn_query],page:params[:page] }
   end

@@ -1,6 +1,6 @@
 
 /* 全体のスタイル */
-.review_new_box {
+.review_box {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
@@ -10,7 +10,7 @@
 }
 
 /* 書籍情報のスタイル */
-.review_new_book {
+.review_book {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -21,18 +21,18 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.review_new_book img {
+.review_book img {
   width: 120px;
   height: auto;
   border-radius: 5px;
 }
 
-.review_new_book h2 {
+.review_book h2 {
   font-size: 18px;
   margin: 0;
 }
 
-.review_new_book p {
+.review_book p {
   margin: 5px 0;
   font-size: 14px;
   color: #555;
@@ -43,11 +43,15 @@ form {
   margin-top: 20px;
 }
 
-.new_item {
+.review_items{
+  margin-top: 20px;
+}
+
+.review_item {
   margin-bottom: 15px;
 }
 
-.new_item div {
+.review_item div {
   font-weight: bold;
   margin-bottom: 5px;
 }
@@ -69,7 +73,7 @@ textarea {
 }
 
 /* ボタンのスタイル */
-.new_submit_button, .new_page_back form input[type="submit"] {
+.review_submit_button, .review_page_back form input[type="submit"] {
   display: block;
   width: 100%;
   padding: 10px;
@@ -81,12 +85,12 @@ textarea {
   transition: background 0.3s;
 }
 
-.new_submit_button:hover, .new_page_back form input[type="submit"]:hover {
+.review_submit_button:hover, .review_page_back form input[type="submit"]:hover {
   background: #0056b3;
 }
 
 /* 戻るボタン */
-.new_page_back {
+.review_page_back {
   margin-top: 15px;
   text-align: center;
 }

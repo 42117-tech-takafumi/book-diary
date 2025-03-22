@@ -1,4 +1,20 @@
-<% @reviews.each do |review| %>
-  <img src="<%= review.image_url %>" alt="Book Cover" class="index_book_img">
-  <%= review.title  %>
-<% end %>
+<div class = "user_show" >
+  <% @reviews.each do |review| %>
+    <div class = "user_show_review" >
+      <img src="<%= review.image_url %>" alt="Book Cover" class="user_show_review_img">
+
+      <div class = "user_show_review_info" >
+        <h2><%= review.title  %></h2>
+        <p>著者: <%= review.author %></p>
+        <p>投稿日: <%= review.created_at %></p>
+      </div>
+
+      <div class = "user_show_links" >
+        <%= link_to "詳細へ", review_path(review.id), class: "user_show_link" %>
+        <%= link_to "編集する", edit_review_path(review.id), class: "user_show_link" %>
+        <%= link_to "削除する", review_path(review.id), data: { turbo_method: :delete }, class: "user_show_link" %>
+      </div>
+
+    </div>
+  <% end %>
+</div>

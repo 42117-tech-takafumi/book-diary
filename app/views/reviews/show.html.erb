@@ -1,0 +1,37 @@
+<div class = "review_box" >
+  
+  <div class = "review_book">
+    <img src="<%= @review.image_url %>" alt="Book Cover">
+    <h2>タイトル：<%=@review.title %>
+      <p>著者：<%=@review.author %></p>
+      <p>出版社：<%=@review.publisher_name %></p>
+      <p>isbn：<%=@review.isbn %></p>
+      <p>ジャンル：<%=@review.books_genre_name %></p>
+    </h2>
+  </div>
+
+  <div class = "review_items">    
+    <div class = "review_item" >
+      <div>〇あなたが思ったジャンル1</div>
+      <%= @review.tag1.name %>
+    </div>
+    <div class = "review_item">
+      <div>〇あなたが思ったジャンル2</div>
+      <%= @review.tag2.name %>
+    </div>
+    
+    <div class = "review_item">
+      <div>〇あらすじ</div>
+      <%= @review.item_caption %>
+    </div>
+    <div class = "review_item">
+      <div>〇感想</div>
+      <%= @review.comment %>
+    </div>
+
+  <div class = "show_page_back" >
+    <%= form_with url: user_path(current_user.id), method: :get do |f| %>
+      <%= f.submit "戻る" %>
+    <% end %>
+  </div>
+</div>
