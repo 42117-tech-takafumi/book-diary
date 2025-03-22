@@ -1,0 +1,4 @@
+<% @reviews.each do |review| %>
+  <img src="<%= review.image_url %>" alt="Book Cover" class="index_book_img">
+  <%= review.title  %>
+<% end %>

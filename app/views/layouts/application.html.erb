@@ -16,7 +16,7 @@
         <h1 class="grid-6"><a href="/">BookDiary</a></h1>
         <% if user_signed_in? %>
           <div class="grid-6">
-            <%= link_to current_user.nickname, "/users/#{current_user.id}", class: "post" %>
+            <%= link_to current_user.nickname, user_path(current_user.id), class: "post" %>
             <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "post"%>
           </div>
         <% else %>

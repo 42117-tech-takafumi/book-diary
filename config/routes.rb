@@ -7,5 +7,7 @@ Rails.application.routes.draw do
       get :search #APIから本を検索するためのアクション
     end
   end
+
+  resources :users, only: :show
   
 end
