@@ -1,7 +1,8 @@
 class ReviewsController < ApplicationController
   before_action :authenticate_user! , only: [:new,:create,:show,:edit]
   before_action :set_search_params , only: [:new,:create]
-  before_action :set_review , only: [:show,:edit,:update]
+  before_action :set_review , only: [:show,:edit,:update,:destroy]
+  before_action :move_to_index, only: [:edit,:destroy]
   
   def index
     
@@ -78,6 +79,9 @@ class ReviewsController < ApplicationController
 
   def destroy
 
+    @review.destroy
+    redirect_to user_path(current_user.id)
+
   end
 
   private
@@ -97,6 +101,12 @@ class ReviewsController < ApplicationController
   
   def set_search_params
     @search_params = {title_query:params[:title_query],author_query:params[:author_query],isbn_query:params[:isbn_query],page:params[:page] }
+  end
+
+  def move_to_index
+    if current_user != @review.user
+      redirect_to action: :index
+    end
   end
 
 end
