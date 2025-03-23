@@ -1,14 +1,6 @@
 <div class = "review_box" >
   
-  <div class = "review_book">
-    <img src="<%= @review.image_url %>" alt="Book Cover">
-    <h2>タイトル：<%=@review.title %>
-      <p>著者：<%=@review.author %></p>
-      <p>出版社：<%=@review.publisher_name %></p>
-      <p>isbn：<%=@review.isbn %></p>
-      <p>ジャンル：<%=@review.books_genre_name %></p>
-    </h2>
-  </div>
+  <%= render 'shared/review_book', model: @review %>
 
   <div class = "review_items">    
     <div class = "review_item" >

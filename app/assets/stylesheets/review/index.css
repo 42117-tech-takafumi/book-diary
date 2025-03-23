@@ -43,13 +43,19 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 軽い影をつける */
   width: 80%; /* コンテンツ幅を調整 */
   max-width: 600px; /* 最大幅を設定 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.index_book:hover {
+  transform: translateY(-5px); /* 上に5px移動 */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 影を強調 */
 }
 
 .index_book_img {
-  width: 170px; /* すべての画像を同じ幅に */
-  height: 240px; /* 高さも統一 */
+  width: 100px; /* すべての画像を同じ幅に */
+  height: 150px; /* 高さも統一 */
   object-fit: cover; /* 画像が枠内に収まるように調整 */
-  border-radius: 8px; /* 角を少し丸める */
+  border-radius: 5px; /* 角を少し丸める */
 }
 
 .index_book_info {
@@ -58,12 +64,12 @@
 }
 
 .index_book h2 {
-  font-size: 16px;
+  font-size: 15px;
   margin: 10px 0;
 }
 
 .index_book p {
-  font-size: 14px;
+  font-size: 13px;
   margin: 5px 0;
 }
 

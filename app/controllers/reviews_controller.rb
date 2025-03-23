@@ -1,8 +1,8 @@
 class ReviewsController < ApplicationController
-  before_action :authenticate_user! , only: [:new,:create,:show]
+  before_action :authenticate_user! , only: [:new,:create,:show,:edit]
   before_action :set_search_params , only: [:new,:create]
-  before_action :set_review , only: [:show]
-
+  before_action :set_review , only: [:show,:edit,:update]
+  
   def index
     
   end
@@ -51,10 +51,11 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
 
     if @review.save
-      redirect_to root_path
+      redirect_to user_path(current_user.id)
     else
       render :new, status: :unprocessable_entity
     end
+
   end
   
   def show
@@ -65,6 +66,16 @@ class ReviewsController < ApplicationController
 
   end
 
+  def update
+
+    if @review.update(review_params)
+      redirect_to user_path(current_user.id)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+
+  end
+
   def destroy
 
   end
@@ -72,8 +83,12 @@ class ReviewsController < ApplicationController
   private
 
   def review_params
-    filtered_params = params.except(:title_query, :author_query, :isbn_query, :page)
-    filtered_params.permit(:title,:image_url,:author,:publisher_name,:isbn,:books_genre_id,:books_genre_name,:tag_id1,:tag_id2,:item_caption,:comment).merge(user_id: current_user.id)
+    if params[:review].present?
+      params.require(:review).permit(:title,:image_url,:author,:publisher_name,:isbn,:books_genre_id,:books_genre_name,:tag_id1,:tag_id2,:item_caption,:comment).merge(user_id: current_user.id)
+    else
+      filtered_params = params.except(:title_query, :author_query, :isbn_query, :page)
+      filtered_params.permit(:title,:image_url,:author,:publisher_name,:isbn,:books_genre_id,:books_genre_name,:tag_id1,:tag_id2,:item_caption,:comment).merge(user_id: current_user.id)
+    end
   end
 
   def set_review
