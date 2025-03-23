@@ -1,1 +1,17 @@
-editです
+<div class = "review_box" >
+  <%= render 'shared/error_messages', model: @review %>
+  <%= render 'shared/review_book', model: @review %>
+
+  <div>
+    <%= form_with model: @review, url: review_path(@review), method: :patch, local: true do |f| %>
+      <%= render 'shared/review_form', f: f %>
+    <% end %>
+  </div>
+
+  <div class = "show_page_back" >
+    <%= form_with url: user_path(current_user.id), method: :get do |f| %>
+      <%= f.submit "戻る" %>
+    <% end %>
+  </div>
+  
+</div>

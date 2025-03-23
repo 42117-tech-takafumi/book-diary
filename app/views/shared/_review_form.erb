@@ -1,0 +1,41 @@
+
+  <%= f.hidden_field :title, value:@review.title %>
+  <%= f.hidden_field :image_url, value:@review.image_url %>
+  <%= f.hidden_field :author, value:@review.author %>
+  <%= f.hidden_field :publisher_name, value:@review.publisher_name %>
+  <%= f.hidden_field :isbn, value:@review.isbn %>
+  <%= f.hidden_field :books_genre_name, value:@review.books_genre_name %>
+  <%= f.hidden_field :books_genre_id, value:@review.books_genre_id %>
+
+  <% if @search_params.present? %>
+    <%= f.hidden_field :title_query, value:@search_params[:title_query] %>
+    <%= f.hidden_field :author_query, value:@search_params[:author_query] %>
+    <%= f.hidden_field :isbn_query, value:@search_params[:isbn_query] %>
+    <%= f.hidden_field :page, value:@search_params[:page] %>
+  <% end %>
+  
+  <div class = "review_item" >
+    <div>〇あなたが思ったジャンル1</div>
+    <%= f.collection_select(:tag_id1, Tag.all, :id, :name, { selected: @review.tag_id1 }, {class:"genre-select"} ) %>
+  </div>
+
+  <div class = "review_item">
+    <div>〇あなたが思ったジャンル2</div>
+    <%= f.collection_select(:tag_id2, Tag.all, :id, :name, { selected: @review.tag_id2 }, {class:"genre-select"}) %>
+  </div>
+  
+  <div class = "review_item">
+    <div>〇あらすじ</div>
+    <%= f.text_area :item_caption, placeholder:"あらすじ" ,rows:"7" ,maxlength:"500",value: @review.item_caption %>
+  </div>
+
+  <div class = "review_item">
+    <div>〇感想</div>
+    <%= f.text_area :comment, placeholder:"感想" ,rows:"7" ,maxlength:"500" ,value: @review.comment %>
+  </div>
+
+  <% if @search_params.present? %>
+    <%= f.submit "投稿" , class:"review_submit_button" %>
+  <% else %>
+    <%= f.submit "編集" , class:"review_submit_button" %>
+  <% end %>
