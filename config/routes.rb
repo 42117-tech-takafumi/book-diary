@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   
   resources :reviews do
     collection do
-      get :search #APIから本を検索するためのアクション
+      #APIから本を検索するためのアクションとお薦めの本を探すためのアクション
+      get :search, :recommend
     end
   end
 

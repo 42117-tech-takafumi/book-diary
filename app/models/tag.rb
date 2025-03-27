@@ -5,9 +5,9 @@ class Tag < ActiveHash::Base
     { id: 3, name: 'SF' },
     { id: 4, name: 'ホラー' },
     { id: 5, name: 'エッセイ' },
-    { id: 6, name: '外国の小説' },
-    { id: 7, name: 'ロマンス' },
-    { id: 8, name: 'ファンタジー' }
+    { id: 6, name: 'ロマンス' },
+    { id: 7, name: 'ファンタジー' },
+    { id: 8, name: 'ノンフィクション' }
   ]
 
   include ActiveHash::Associations
