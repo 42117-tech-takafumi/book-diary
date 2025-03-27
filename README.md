@@ -23,8 +23,8 @@
 | isbn                   | string     |             |
 | books_genre_id         | string     |             |
 | books_genre_name       | string     |             |
-| tag_id1                | string     |             |
-| tag_id2                | string     |             |
+| tag_id1                | integer    |             |
+| tag_id2                | integer    |             |
 | item_caption           | text       |             |
 | comment                | text       | null: false |
 | user                   | references | null: false, foreign_key: true |

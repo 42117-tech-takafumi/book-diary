@@ -11,4 +11,6 @@ class Review < ApplicationRecord
   validates :title, :author, :publisher_name, :comment, presence: true
   validates :isbn, uniqueness: { scope: :user_id, message: "is duplicated. You have already written the review for this book." }
 
+  validates :tag_id1,numericality: { other_than: 1, message: "can't be blank"}
+
 end

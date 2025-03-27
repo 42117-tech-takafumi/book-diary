@@ -36,8 +36,66 @@ class RakutenBooksService
     page = parsed_response["page"].to_i
     total_pages = (total_hits.to_i/30).ceil + 1
     books = JSON.parse(response)["Items"] || []
+
     return books,total_hits,page,total_pages
 
+  end
+
+  #読書履歴からお薦めの本を検索するメソッド
+  def self.search_recommended_books(most_frequent_my_genre,most_frequent_author)
+    #ファンタジーのキーワードリスト
+    fantasy_keywords = ["ファンタジー","魔法", "勇者", "ドラゴン", "異世界", "精霊", "呪文", "魔王", "魔導", "剣士", "魔女"]
+    author_query = "&author=#{CGI.escape(most_frequent_author)}"
+    genre_query = "&booksGenreId=#{CGI.escape(most_frequent_my_genre)}"
+
+    #著者のお薦め本を検索
+    query = "#{BOOK_BASE_URL}?format=json#{author_query}&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+    url = URI(query)
+    response = Net::HTTP.get(url)
+    author_books = JSON.parse(response)["Items"] || []
+
+    query = "#{BOOK_BASE_URL}?format=json#{genre_query}&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+    url = URI(query)
+    response = Net::HTTP.get(url)
+    parsed_response = JSON.parse(response) 
+    genre_books = JSON.parse(response)["Items"] || []
+
+    #ジャンルがファンタジーの場合
+    if most_frequent_my_genre == "001003001"
+      total_hits = parsed_response["count"] || parsed_response["hits"]
+      total_pages = (total_hits.to_i/30).ceil
+
+      genre_books = ""
+
+      total_pages.times do |cnt|
+        cnt += 1
+
+        query = "#{BOOK_BASE_URL}?format=json#{genre_query}&page=#{cnt}&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+        url = URI(query)
+        response = Net::HTTP.get(url)
+        parsed_response = JSON.parse(response) 
+        fantasy_books = JSON.parse(response)["Items"] || []
+
+        sleep(0.5)
+
+        fantasy_books.each do |book|
+          item_caption = book["Item"]["itemCaption"] || ""
+          if fantasy_keywords.any? { |word| item_caption.include?(word) }
+            if genre_books.blank?
+              genre_books = [book]
+            else
+              genre_books << book
+            end
+          end
+        end
+
+        if genre_books.length > 5
+          break
+        end
+      end
+    end
+    
+    return author_books,genre_books
   end
 
   #本のジャンルを検索するメソッド

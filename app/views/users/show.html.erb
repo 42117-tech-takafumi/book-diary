@@ -1,4 +1,12 @@
 <div class = "user_show" >
+  <% unless @reviews.blank? %>
+    <div>
+      <%= link_to "読書履歴からお薦めの本を検索", recommend_reviews_path, class: "user_show_link" %>
+    </div>
+  <% else %>
+    <div>あなたが投稿した感想はまだありません。</div>
+  <% end %>
+
   <% @reviews.each do |review| %>
     <div class = "user_show_review" >
       <img src="<%= review.image_url %>" alt="Book Cover" class="user_show_review_img">
