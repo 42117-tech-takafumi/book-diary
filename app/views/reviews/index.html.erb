@@ -20,34 +20,46 @@
 <% end %>
 
 <% if @books.present? %>
-
   <% @books.each do |book| %>
-    <div class = "index_book" >
-      <% if user_signed_in? %>
-        <%= link_to new_review_path( book: book,title_query: @search_params[:title_query],author_query: @search_params[:author_query],isbn_query: @search_params[:isbn_query],page: @search_params[:page]), class: "index_book_img_link" do %>
-          <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
-        <% end %>
-      <% else %>
-        <%= link_to new_user_session_path, class: "index_book_img_link" do %>
-          <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
-        <% end %>
-      <% end %>
-      <div class = "index_book_info" >
+    <% unless @isbn_list.include?(book["Item"]["isbn"]) %>
+      <div class = "index_book" >
         <% if user_signed_in? %>
           <%= link_to new_review_path( book: book,title_query: @search_params[:title_query],author_query: @search_params[:author_query],isbn_query: @search_params[:isbn_query],page: @search_params[:page]), class: "index_book_img_link" do %>
-            <h2><%= book["Item"]["title"] %></h2>
+            <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
           <% end %>
         <% else %>
           <%= link_to new_user_session_path, class: "index_book_img_link" do %>
-            <h2><%= book["Item"]["title"] %></h2>
+            <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
           <% end %>
         <% end %>
-        <p>著者: <%= book["Item"]["author"] %></p>
-        <p>出版社: <%= book["Item"]["publisherName"] %></p>
-        <p>isbn: <%= book["Item"]["isbn"] %></p>
-        <p>ジャンル: <%= book["Item"]["booksGenreName"] %></p>
+        <div class = "index_book_info" >
+          <% if user_signed_in? %>
+            <%= link_to new_review_path( book: book,title_query: @search_params[:title_query],author_query: @search_params[:author_query],isbn_query: @search_params[:isbn_query],page: @search_params[:page]), class: "index_book_img_link" do %>
+              <h2><%= book["Item"]["title"] %></h2>
+            <% end %>
+          <% else %>
+            <%= link_to new_user_session_path, class: "index_book_img_link" do %>
+              <h2><%= book["Item"]["title"] %></h2>
+            <% end %>
+          <% end %>
+          <p>著者: <%= book["Item"]["author"] %></p>
+          <p>出版社: <%= book["Item"]["publisherName"] %></p>
+          <p>isbn: <%= book["Item"]["isbn"] %></p>
+          <p>ジャンル: <%= book["Item"]["booksGenreName"] %></p>
+        </div>
       </div>
-    </div>
+    <% else %>
+      <div class = "index_book2" >
+        <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
+        <div class = "index_book_info" >
+          <h2><%= book["Item"]["title"] %></h2>
+          <p>著者: <%= book["Item"]["author"] %></p>
+          <p>出版社: <%= book["Item"]["publisherName"] %></p>
+          <p>isbn: <%= book["Item"]["isbn"] %></p>
+          <p>ジャンル: <%= book["Item"]["booksGenreName"] %></p>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 
   <div class="index_page_nav">

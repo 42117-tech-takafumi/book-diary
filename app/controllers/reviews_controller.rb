@@ -3,6 +3,7 @@ class ReviewsController < ApplicationController
   before_action :set_search_params , only: [:new,:create]
   before_action :set_review , only: [:show,:edit,:update,:destroy]
   before_action :move_to_index, only: [:edit,:destroy,:show]
+  before_action :search_review_isbn,  only: [:search]
   
   def index
     
@@ -175,8 +176,20 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def search_review_isbn
+    @isbn_list = "a"
+    if user_signed_in?
+      user = User.find(current_user.id)
+      @reviews = user.reviews
+      @isbn_list = @reviews.pluck(:isbn).flatten.compact
+      
+      if @isbn_list.blank?
+        @isbn_list = "a"
+      end
+    end
+  end
+
   def remove_book(recommended_books)
-    
     @reviews.each do |review|
       recommended_books.delete_if { |book| book["Item"]["isbn"] == review.isbn }
       recommended_books.delete_if { |book| book["Item"]["title"] == review.title }
