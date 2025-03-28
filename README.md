@@ -45,11 +45,13 @@ Basic認証アカウント：admin42117
 
 ## 実装した機能についての画像やGIFおよびその説明
 - 本を検索する機能<br>
-<img src="https://i.gyazo.com/080d48e102434c85333dba6b64b99c5a.gif" width="307" />
+<img src="https://i.gyazo.com/080d48e102434c85333dba6b64b99c5a.gif" width="410" />
+
 - 本の感想を投稿する機能<br>
-<img src="https://i.gyazo.com/8e8706705ea2f335abb2cfa53d3dbf4f.gif" width="307" />
+<img src="https://i.gyazo.com/8e8706705ea2f335abb2cfa53d3dbf4f.gif" width="410" />
+
 - 読書履歴からお薦めの本を検索する機能<br>
-<img src="https://i.gyazo.com/679c180c87b342286bcbb79ce78e234f.gif" width="307" />
+<img src="https://i.gyazo.com/679c180c87b342286bcbb79ce78e234f.gif" width="410" />
 
 ## 実装予定の機能
 - AIによる高精度のお薦めの本の検索機能
@@ -59,11 +61,6 @@ Basic認証アカウント：admin42117
 - usersテーブル：ユーザー情報を管理
 - reviewsテーブル：本の感想、タイトルなどの書籍情報を管理<br>
 <img width="307" alt="Image" src="https://i.gyazo.com/6f841ffb6a9dfe4264d3100d98475d2a.png" />
-
-## 画面遷移図
-画面遷移図を添付。
-<br>AIで作る場合は、googleアカウントがあれば使用できる「Vercel v0」がオススメです。
-<img width="509" alt="Image" src="https://github.com/user-attachments/assets/086ceb82-5286-4340-b4ff-014d621e4d26" />
 
 ## 開発環境
 | 項目               | バージョン・サービス |
