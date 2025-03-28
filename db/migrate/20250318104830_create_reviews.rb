@@ -8,7 +8,7 @@ class CreateReviews < ActiveRecord::Migration[7.1]
       t.string :isbn
       t.string :books_genre_id
       t.string :books_genre_name
-      t.integer :tag_id1
+      t.integer :tag_id1, null: false
       t.integer :tag_id2
       t.text :item_caption
       t.text :comment, null: false
