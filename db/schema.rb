@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_18_104830) do
     t.string "isbn"
     t.string "books_genre_id"
     t.string "books_genre_name"
-    t.integer "tag_id1"
+    t.integer "tag_id1", null: false
     t.integer "tag_id2"
     t.text "item_caption"
     t.text "comment", null: false

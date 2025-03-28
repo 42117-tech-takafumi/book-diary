@@ -11,12 +11,11 @@ RSpec.describe Review, type: :model do
       it 'title、author、publisher_name、comment、user_idが存在すれば投稿できる' do
         expect(@review).to be_valid
       end
-      it '上記のカラムが存在すればimage_url、isbn、books_genre_id、books_genre_name、tag_id1、tag_id2、item_captionが空でも投稿できる' do
+      it '上記のカラムが存在すればimage_url、isbn、books_genre_id、books_genre_name、tag_id2、item_captionが空でも投稿できる' do
         @review.image_url=""
         @review.isbn=""
         @review.books_genre_id=""
         @review.books_genre_name=""
-        @review.tag_id1=""
         @review.tag_id2=""
         @review.item_caption=""
         expect(@review).to be_valid
@@ -38,6 +37,11 @@ RSpec.describe Review, type: :model do
         @review.publisher_name=""
         @review.valid?
         expect(@review.errors.full_messages).to include("Publisher name can't be blank")
+      end
+      it 'tag_id1が空では投稿できない' do
+        @review.tag_id1="1"
+        @review.valid?
+        expect(@review.errors.full_messages).to include("Tag id1 can't be blank")
       end
       it 'commentが空では投稿できない' do
         @review.comment=""
