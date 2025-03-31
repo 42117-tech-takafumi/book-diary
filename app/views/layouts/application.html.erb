@@ -13,7 +13,7 @@
   <body>
     <header class="header">
       <div class="header__bar row">
-        <h1 class="grid-6"><a href="/">BookDiary</a></h1>
+        <h1 class="grid-6"><%= link_to image_tag("book-diary-logo.png", class:"furima-icon"), "/" %></h1>
         <% if user_signed_in? %>
           <div class="grid-6">
             <%= link_to current_user.nickname, user_path(current_user.id), class: "post" %>
