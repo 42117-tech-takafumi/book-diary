@@ -1,0 +1,18 @@
+<div class = "recommend_books" >
+    <% books.each do |book| %>
+      <div class = "recommend_book" >
+        <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="recommend_book_img">
+          
+        <div class = "recommend_book_info" >
+          <h2><%= book["Item"]["title"] %></h2>
+            
+          <p>著者: <%= book["Item"]["author"] %></p>
+          <p>出版社: <%= book["Item"]["publisherName"] %></p>
+          <p>isbn: <%= book["Item"]["isbn"] %></p>
+          <p>ジャンル: <%= book["Item"]["booksGenreName"] %></p>
+          <p>あらすじ：<%= book["Item"]["itemCaption"] %></p>
+        </div>
+        
+      </div>
+    <%end %>
+  </div>

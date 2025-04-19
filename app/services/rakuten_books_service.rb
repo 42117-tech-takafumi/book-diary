@@ -26,7 +26,7 @@ class RakutenBooksService
     end
 
     #入力された情報を元に本を検索し、返ってきたデータをJSON形式で受け取る
-    query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}#{isbn_query}&page=#{search_params[:page]}&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+    query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}#{isbn_query}&page=#{search_params[:page]}&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
     url = URI(query)
     response = Net::HTTP.get(url)
     parsed_response = JSON.parse(response) 
@@ -54,6 +54,7 @@ class RakutenBooksService
     response = Net::HTTP.get(url)
     author_books = JSON.parse(response)["Items"] || []
 
+    #ジャンルのお薦め本を検索
     query = "#{BOOK_BASE_URL}?format=json#{genre_query}&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
     url = URI(query)
     response = Net::HTTP.get(url)
@@ -96,6 +97,43 @@ class RakutenBooksService
     end
     
     return author_books,genre_books
+  end
+
+  def self.search_recommended_books_by_ai(books)
+
+    search_books=""
+
+    (books.length/2).times do|i|
+      i *= 2
+      title_query = "&title=#{CGI.escape(books[i])}"
+      author_query = "&author=#{CGI.escape(books[i+1])}"
+
+      #入力された情報を元に本を検索し、返ってきたデータをJSON形式で受け取る
+      query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+      url = URI(query)
+      response = Net::HTTP.get(url)
+      book = JSON.parse(response)["Items"] || []
+
+      #ヒットしなかったらタイトルのみで検索しなおす
+      if book.blank?
+        query = "#{BOOK_BASE_URL}?format=json#{title_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+        url = URI(query)
+        response = Net::HTTP.get(url)
+        book = JSON.parse(response)["Items"] || []
+      end
+
+      sleep(0.5)
+
+      if search_books.blank? && !book.blank?
+        search_books = book
+      elsif !book.blank?
+        search_books << book[0]
+      end
+      
+    end
+
+    return search_books
+
   end
 
   #本のジャンルを検索するメソッド
