@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-  before_action :authenticate_user! , only: [:new,:create,:edit,:recommend]
+  before_action :authenticate_user! , only: [:new,:create,:edit,:recommend,:recommend_by_ai]
   before_action :set_search_params , only: [:new,:create]
   before_action :set_review , only: [:show,:edit,:update,:destroy]
   before_action :move_to_index, only: [:edit,:destroy,:show]
@@ -120,6 +120,35 @@ class ReviewsController < ApplicationController
     @author_books = remove_book(@author_books)
     @genre_books = remove_book(@genre_books)
 
+  end
+
+  def recommend_by_ai
+    #ユーザーが投稿した感想を全て取得
+    @reviews = Review.where(user_id: current_user.id)
+
+    #今で読んだ本のタイトルとその著者名
+    title_authors = ""
+    @reviews.each do |review|
+      title_authors = title_authors + ("・タイトル：#{review.title}、著者：#{review.author}")
+    end
+
+    #検索テキスト
+    prompt = "以下の本を読んだ人へお薦めの実在する小説を7冊教えてください。
+                実在する本だけお薦めしてください。
+                タイトルと著者名だけ返してください。
+                返答は日本語でお願いします。              
+                返すときは「タイトル,著者名,タイトル,著者名,・・・」といった形式で返してください。これ以外の文字などは含めないでください。
+                下記の本はお薦めとしては選ばないで下さい。#{title_authors}"
+  
+    cohere_service = CohereService.new
+    @books = cohere_service.search_books_by_ai(prompt)
+    books2 = @books.split(',')
+
+    @ai_books = RakutenBooksService.search_recommended_books_by_ai(books2)
+
+    #本を検索出来たらジャンルを検索する
+    @ai_books = RakutenBooksService.search_genres(@ai_books)
+    
   end
 
   private

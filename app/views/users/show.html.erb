@@ -2,6 +2,7 @@
   <% unless @reviews.blank? %>
     <div>
       <%= link_to "読書履歴からお薦めの本を検索", recommend_reviews_path, class: "user_show_link" %>
+      <%= link_to "AIを使って読書履歴からお薦めの本を検索", recommend_by_ai_reviews_path, class: "user_show_link" %>
     </div>
   <% else %>
     <div>あなたが投稿した感想はまだありません。</div>
