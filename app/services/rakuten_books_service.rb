@@ -158,8 +158,13 @@ class RakutenBooksService
           unless genre_name.blank?
             genre_name = genre_name + "、"
           end
-
-          genre_name = genre_name + JSON.parse(response)["current"]["booksGenreName"]
+          
+          #ジャンル検索が失敗ではない場合、変数にジャンル名を格納する
+          unless response.include?("error_description")
+            genre_name = genre_name + JSON.parse(response)["current"]["booksGenreName"]
+          else
+            genre_name = "ジャンル無し"
+          end
           
         end
 
