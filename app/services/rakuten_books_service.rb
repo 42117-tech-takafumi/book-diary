@@ -36,7 +36,7 @@ class RakutenBooksService
     page = parsed_response["page"].to_i
     total_pages = (total_hits.to_i/30).ceil + 1
     books = JSON.parse(response)["Items"] || []
-
+  
     return books,total_hits,page,total_pages
 
   end
