@@ -63,28 +63,26 @@
   <% end %>
 
   <div class="index_page_nav">
-    <% if @search_params[:page] != "1" %>
-      <div class = "index_page_before" >
-        <%= form_with url: search_reviews_path, method: :get do |f| %>
-          <%= f.hidden_field :title_query, value: @search_params[:title_query] %>
-          <%= f.hidden_field :author_query, value: @search_params[:author_query] %>
-          <%= f.hidden_field :isbn_query, value: @search_params[:isbn_query] %>
-          <%= f.hidden_field :page, value: (@search_params[:page].to_i - 1) %>
-          <%= f.submit "前のページへ" %>
-        <% end %>
-      </div>
-    <% end %>
-
-    <% if @search_params[:page].to_i != @book_counts[:total_pages] %>
-      <div class = "index_page_next" >
-      <%= form_with url: search_reviews_path, method: :get do |f| %>
-        <%= f.hidden_field :title_query, value: @search_params[:title_query] %>
-        <%= f.hidden_field :author_query, value: @search_params[:author_query] %>
-        <%= f.hidden_field :isbn_query, value: @search_params[:isbn_query] %>
-        <%= f.hidden_field :page, value: (@search_params[:page].to_i + 1)  %>
-        <%= f.submit "次のページへ" %>
+    <% if @book_counts[:total_pages] != "1" %>
+      <% @book_counts[:total_pages].times do |page|%>
+        <% page = page + 1 %>
+        
+        <div class = "index_page_box" >
+          <% if page != @book_counts[:page] %>
+            <%= form_with url: search_reviews_path, method: :get do |f| %>
+              <%= f.hidden_field :title_query, value: @search_params[:title_query] %>
+              <%= f.hidden_field :author_query, value: @search_params[:author_query] %>
+              <%= f.hidden_field :isbn_query, value: @search_params[:isbn_query] %>
+              <%= f.hidden_field :page, value: (page) %>
+              <%= f.submit page %>
+            <% end %>
+          <% else %>
+            <div class = "index_now">
+              <%= page %>
+            </div>
+          <% end %>
+        </div>
       <% end %>
-      </div>
     <% end %>
   </div>
 

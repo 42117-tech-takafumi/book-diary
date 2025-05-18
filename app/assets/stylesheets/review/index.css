@@ -12,7 +12,7 @@
 .index_submit_button{
   height: 50px;
   width: 200px;
-  background-color: #0056b3; /* ホバー時の色 */
+  background-color: #0056b3;
 }
 
 /* エラーメッセージ */
@@ -93,34 +93,38 @@
   margin: 5px 0;
 }
 
-
 /* ページナビゲーションを中央に配置 */
 .index_page_nav {
   display: flex;
-  justify-content: space-between; /* 左右に配置 */
+  justify-content: center;
   align-items: center;
-  margin: 20px auto;
-  max-width: 800px; /* ページの横幅を制限 */
 }
 
-/* 左のボタン */
-.index_page_before {
-  flex: 1; /* 可能な限り左に寄せる */
-  text-align: left;
-}
-
-/* 右のボタン */
-.index_page_next {
-  flex: 1; /* 可能な限り右に寄せる */
-  text-align: right;
+.index_page_box{
+  padding: 5px;
 }
 
 /* ボタンのデザイン */
-.index_page_before form input[type="submit"],
-.index_page_next form input[type="submit"] {
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
+.index_page_box form input[type="submit"]{
+  color: black;
+  border: solid;
+  border-width: 2px;
+  height: 50px;
+  width: 50px;
+  font-size: 13px;
+  border-radius: 0%;
   cursor: pointer;
+}
+.index_now{
+  color: black;
+  border: solid;
+  border-width: 2px;
+  margin-top: 10px;
+  height: 50px;
+  width: 50px;
+  font-size: 13px;
+  border-radius: 0%;
+  background-color: #DDDDDD;
+  text-align: center;
+  line-height: 45px;
 }
