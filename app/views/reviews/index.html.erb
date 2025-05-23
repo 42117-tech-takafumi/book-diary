@@ -16,7 +16,28 @@
   <div class = "index_book_counts" >
     <%= @book_counts[:total_hits] %>件ヒット <%= @book_counts[:page] %>/<%= @book_counts[:total_pages] %>ページ
   </div>
-  <br>
+  <div class="index_page_nav">
+    <% if @book_counts[:total_pages] != "1" %>
+      <% @book_counts[:total_pages].times do |page|%>
+        <% page = page + 1 %>
+        <div class = "index_page_box" >
+          <% if page != @book_counts[:page] %>
+            <%= form_with url: search_reviews_path, method: :get do |f| %>
+              <%= f.hidden_field :title_query, value: @search_params[:title_query] %>
+              <%= f.hidden_field :author_query, value: @search_params[:author_query] %>
+              <%= f.hidden_field :isbn_query, value: @search_params[:isbn_query] %>
+              <%= f.hidden_field :page, value: (page) %>
+              <%= f.submit page %>
+            <% end %>
+          <% else %>
+            <div class = "index_now">
+              <%= page %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
 
 <% if @books.present? %>
@@ -28,17 +49,17 @@
             <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
           <% end %>
         <% else %>
-          <%= link_to new_user_session_path, class: "index_book_img_link" do %>
+          <%= link_to new_user_session_path do %>
             <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
           <% end %>
         <% end %>
         <div class = "index_book_info" >
           <% if user_signed_in? %>
-            <%= link_to new_review_path( book: book,title_query: @search_params[:title_query],author_query: @search_params[:author_query],isbn_query: @search_params[:isbn_query],page: @search_params[:page]), class: "index_book_img_link" do %>
-              <h2><%= book["Item"]["title"] %></h2>
-            <% end %>
+            <h2>
+              <%= link_to book["Item"]["title"], new_review_path(book: book,title_query: @search_params[:title_query],author_query: @search_params[:author_query],isbn_query: @search_params[:isbn_query],page: @search_params[:page]) , class: "index_book_link" %>
+            </h2>
           <% else %>
-            <%= link_to new_user_session_path, class: "index_book_img_link" do %>
+            <%= link_to new_user_session_path do %>
               <h2><%= book["Item"]["title"] %></h2>
             <% end %>
           <% end %>
@@ -66,7 +87,6 @@
     <% if @book_counts[:total_pages] != "1" %>
       <% @book_counts[:total_pages].times do |page|%>
         <% page = page + 1 %>
-        
         <div class = "index_page_box" >
           <% if page != @book_counts[:page] %>
             <%= form_with url: search_reviews_path, method: :get do |f| %>
