@@ -51,7 +51,7 @@ Basic認証アカウント：admin42117
 
 ## 実装した機能についての画像やGIFおよびその説明
 - 本を検索する機能<br>
-<img src="https://i.gyazo.com/b86e053e6d42ba6b177a371001eec11c.gif" width="410" />
+<img src="https://i.gyazo.com/90d34c786a5d6f1bac3b81713c572a8e.gif" width="410" />
 
 - 本の感想を投稿する機能<br>
 <img src="https://i.gyazo.com/a9054e2fa344ac4bf8d670353dbd0ad0.gif" width="410" />
