@@ -49,7 +49,7 @@
             <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
           <% end %>
         <% else %>
-          <%= link_to new_user_session_path do %>
+          <%= link_to new_user_session_path ,class: "index_book_img_link" do %>
             <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
           <% end %>
         <% end %>
@@ -59,7 +59,7 @@
               <%= link_to book["Item"]["title"], new_review_path(book: book,title_query: @search_params[:title_query],author_query: @search_params[:author_query],isbn_query: @search_params[:isbn_query],page: @search_params[:page]) , class: "index_book_link" %>
             </h2>
           <% else %>
-            <%= link_to new_user_session_path do %>
+            <%= link_to new_user_session_path , class: "index_book_link" do %>
               <h2><%= book["Item"]["title"] %></h2>
             <% end %>
           <% end %>

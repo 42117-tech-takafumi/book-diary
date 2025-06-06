@@ -51,7 +51,7 @@ Basic認証アカウント：admin42117
 
 ## 実装した機能についての画像やGIFおよびその説明
 - 本を検索する機能<br>
-<img src="https://i.gyazo.com/90d34c786a5d6f1bac3b81713c572a8e.gif" width="410" />
+<img src="https://i.gyazo.com/0c814f866a27362e7e115fd7b034c5d5.gif" width="410" />
 
 - 本の感想を投稿する機能<br>
 <img src="https://i.gyazo.com/a9054e2fa344ac4bf8d670353dbd0ad0.gif" width="410" />
@@ -63,7 +63,7 @@ Basic認証アカウント：admin42117
 <img src="https://i.gyazo.com/f4ecca4c4c6c5b9dcb397c2eb41c7430.gif" width="410" />
 
 ## 実装予定の機能
-- 検索時間の短縮
+- 読書履歴からお薦めの本を検索する機能の精度の向上
 
 ## データベース設計
 - usersテーブル：ユーザー情報を管理

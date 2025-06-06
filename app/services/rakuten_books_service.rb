@@ -138,47 +138,47 @@ class RakutenBooksService
 
   #本のジャンルを検索するメソッド
   def self.search_genres(books)
+    #配列内の本のジャンルidを格納する配列
+    genre_id_set = Set.new
+
+    #配列内の本のジャンルidを配列に格納する
     books.each do |book|
-      
-      book_genres = book["Item"]["booksGenreId"]
-      genre_name = ""
+      book_genre = book["Item"]["booksGenreId"]
+      next unless book_genre.present?
 
-      #ジャンルidが振られていたらジャンルを検索する
-      if book_genres.present?
-        #ジャンルidから半角数字と/以外の文字列を削除
-        book_genres = book_genres.gsub(/[^0-9\/]/, "")
-
-        #ジャンルidを/で区切る
-        book_genres = book_genres.split("/")
-
-        book_genres.each do |book_genre|
-          url = URI("#{GENRE_BASE_URL}#{CGI.escape(book_genre)}&applicationId=#{ENV['RAKUTEN_APP_ID']}")
-          response = Net::HTTP.get(url)
-
-          unless genre_name.blank?
-            genre_name = genre_name + "、"
-          end
-          
-          #ジャンル検索が失敗ではない場合、変数にジャンル名を格納する
-          unless response.include?("error_description")
-            genre_name = genre_name + JSON.parse(response)["current"]["booksGenreName"]
-          else
-            genre_name = "ジャンル無し"
-          end
-          
-        end
-
-      else
-
-        genre_name = "ジャンル無し"
-
-      end
-
-      book["Item"]["booksGenreName"] = genre_name
+      book_ids = book_genre.gsub(/[^0-9\/]/, "").split("/")
+      book_ids.each { |id| genre_id_set << id }
 
     end
 
-    return books
+    #キャッシュにジャンルidを格納
+    genre_cache = {}
+    genre_id_set.each do |genre_id|
+      url = URI("#{GENRE_BASE_URL}#{CGI.escape(genre_id)}&applicationId=#{ENV['RAKUTEN_APP_ID']}")
+      response = Net::HTTP.get(url)
+
+      if response.include?("error_description")
+        genre_cache[genre_id] = "ジャンル無し"
+      else
+        genre_cache[genre_id] = JSON.parse(response)["current"]["booksGenreName"]
+      end
+    end
+
+    #本のジャンルidをキャッシュから検索し、ジャンル名を格納
+    books.each do |book|
+      book_genre = book["Item"]["booksGenreId"]
+
+      if book_genre.present?
+        book_ids = book_genre.gsub(/[^0-9\/]/, "").split("/")
+        genre_name = book_ids.map { |id| genre_cache[id] || "ジャンル無し" }.uniq.join("、")
+      else
+        genre_name = "ジャンル無し"
+      end
+
+      book["Item"]["booksGenreName"] = genre_name
+    end
+
+   return books
   end
 
 end
