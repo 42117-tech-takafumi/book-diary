@@ -138,33 +138,54 @@ class RakutenBooksService
 
   #本のジャンルを検索するメソッド
   def self.search_genres(books)
-    #配列内の本のジャンルidを格納する配列
-    genre_id_set = Set.new
-
-    #配列内の本のジャンルidを配列に格納する
+    genre_id_set = Set.new  #重複無しでジャンルIDを格納するためのset型オブジェクト
+    genre_cache = {}        #キャッシュ用のハッシュ
+    thread_count = 5        #一度に検索する件数
+    threads = []            #スレッド用配列
+    mutex = Mutex.new       #排他ロック用オブジェクト（複数スレッドがキャッシュへ同時に書き込まないようにする）
+  
     books.each do |book|
       book_genre = book["Item"]["booksGenreId"]
-      next unless book_genre.present?
-
-      book_ids = book_genre.gsub(/[^0-9\/]/, "").split("/")
-      book_ids.each { |id| genre_id_set << id }
-
-    end
-
-    #キャッシュにジャンルidを格納
-    genre_cache = {}
-    genre_id_set.each do |genre_id|
-      url = URI("#{GENRE_BASE_URL}#{CGI.escape(genre_id)}&applicationId=#{ENV['RAKUTEN_APP_ID']}")
-      response = Net::HTTP.get(url)
-
-      if response.include?("error_description")
-        genre_cache[genre_id] = "ジャンル無し"
-      else
-        genre_cache[genre_id] = JSON.parse(response)["current"]["booksGenreName"]
+      
+      if book_genre.present?
+        book_ids = book_genre.gsub(/[^0-9\/]/, "").split("/")
+        book_ids.each { |id| genre_id_set << id }
       end
     end
+  
+    #普通の配列にset型配列の値を格納（.each_sliceは普通の配列でしか使用できないため）
+    genre_id_list = genre_id_set.to_a
+  
+    #スレッド1つにつき最大5件ずつジャンルIDを元にジャンル名をRakutenBooksAPIで検索
+    genre_id_list.each_slice((genre_id_list.size / thread_count.to_f).ceil) do |ids_slice|
+      threads << Thread.new do
+        ids_slice.each do |genre_id|
+          
+          #ジャンルidがキャッシュに無かったらRakutenBooksAPIで検索し、新しくキャッシュに登録する
+          genre_name = Rails.cache.fetch("genre_#{genre_id}", expires_in: 1.day) do
+            url = URI("#{GENRE_BASE_URL}#{CGI.escape(genre_id)}&applicationId=#{ENV['RAKUTEN_APP_ID']}")
+            response = Net::HTTP.get(url)
+  
+            if response.include?("error_description")
+              "ジャンル無し"
+            else
+              JSON.parse(response)["current"]["booksGenreName"]
+            end
+          end
+  
+          #mutexで複数のスレッドが同時にキャッシュへ書き込むのを防止
+          mutex.synchronize do
+            genre_cache[genre_id] = genre_name
+          end
 
-    #本のジャンルidをキャッシュから検索し、ジャンル名を格納
+        end
+      end
+    end
+    
+    #後続処理で不具合が起きないように全スレッドの処理が終わるのを待つ
+    threads.each(&:join)
+  
+    #各本にジャンル名を紐づける
     books.each do |book|
       book_genre = book["Item"]["booksGenreId"]
 
@@ -177,8 +198,9 @@ class RakutenBooksService
 
       book["Item"]["booksGenreName"] = genre_name
     end
+  
+    return books
 
-   return books
   end
-
+  
 end
