@@ -151,9 +151,10 @@ class RakutenBooksService
         book_ids = book_genre.gsub(/[^0-9\/]/, "").split("/")
         book_ids.each { |id| genre_id_set << id }
       end
+
     end
   
-    #普通の配列にset型配列の値を格納（.each_sliceは普通の配列でしか使用できないため）
+    #普通の配列にset型オブジェクトの値を格納（.each_sliceは普通の配列でしか使用できないため）
     genre_id_list = genre_id_set.to_a
   
     #スレッド1つにつき最大5件ずつジャンルIDを元にジャンル名をRakutenBooksAPIで検索
@@ -171,6 +172,7 @@ class RakutenBooksService
             else
               JSON.parse(response)["current"]["booksGenreName"]
             end
+            
           end
   
           #mutexで複数のスレッドが同時にキャッシュへ書き込むのを防止
@@ -197,6 +199,7 @@ class RakutenBooksService
       end
 
       book["Item"]["booksGenreName"] = genre_name
+
     end
   
     return books
