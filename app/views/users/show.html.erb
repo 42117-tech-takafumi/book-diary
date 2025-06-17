@@ -18,10 +18,10 @@
         <p>投稿日: <%= review.created_at %></p>
       </div>
 
-      <div class = "user_show_links" >
+      <div class = "user_show_links">
         <%= link_to "詳細へ", review_path(review.id), class: "user_show_link" %>
         <%= link_to "編集する", edit_review_path(review.id), class: "user_show_link" %>
-        <%= link_to "削除する", review_path(review.id), data: { turbo_method: :delete }, class: "user_show_link" %>
+        <%= link_to "削除する", review_path(review.id), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "user_show_link" %>
       </div>
 
     </div>

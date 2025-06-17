@@ -18,10 +18,6 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.user_show_review:hover {
-  transform: translateY(-5px);
-}
-
 .user_show_review_img {
   width: 100px;
   height: 150px;
