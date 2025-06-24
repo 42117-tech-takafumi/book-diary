@@ -30,10 +30,6 @@
   transition: transform 0.3s ease;
 }
 
-.recommend_book:hover {
-  transform: translateY(-3px);
-}
-
 /* 本の画像（左側に配置） */
 .recommend_book_img {
   width: 120px;
