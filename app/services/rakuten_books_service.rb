@@ -99,14 +99,14 @@ class RakutenBooksService
     return author_books,genre_books
   end
 
+  #AIの検索結果から該当する本を検索するメソッド
   def self.search_recommended_books_by_ai(books)
 
     search_books=""
 
-    (books.length/2).times do|i|
-      i *= 2
-      title_query = "&title=#{CGI.escape(books[i])}"
-      author_query = "&author=#{CGI.escape(books[i+1])}"
+    books.each do |title, author|
+      title_query = "&title=#{CGI.escape(title)}"
+      author_query = "&author=#{CGI.escape(author)}"
 
       #入力された情報を元に本を検索し、返ってきたデータをJSON形式で受け取る
       query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
@@ -131,7 +131,7 @@ class RakutenBooksService
       end
       
     end
-
+   
     return search_books
 
   end
