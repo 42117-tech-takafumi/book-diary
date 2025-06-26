@@ -108,17 +108,14 @@ class ReviewsController < ApplicationController
     #タグidを元に楽天ブックスのジャンルに変換
     @most_frequent_my_genre = set_genre(most_frequent_tag)
 
+    #お薦めの本を検索し、既に読んだ本を取り除く
     book_search = RakutenBooksService.search_recommended_books(@most_frequent_my_genre,@most_frequent_author)
-    @author_books = book_search[0]
-    @genre_books = book_search[1]
+    @author_books = remove_book(book_search[0])
+    @genre_books = remove_book(book_search[1])
 
     #本を検索出来たらジャンルを検索する
     @author_books = RakutenBooksService.search_genres(@author_books)
     @genre_books = RakutenBooksService.search_genres(@genre_books)
-
-    #検索した本から既に読んだ本を取り除く
-    @author_books = remove_book(@author_books)
-    @genre_books = remove_book(@genre_books)
 
   end
 
@@ -132,20 +129,13 @@ class ReviewsController < ApplicationController
       title_authors = title_authors + ("・タイトル：#{review.title}、著者：#{review.author}")
     end
 
-    #検索テキスト
-    prompt = "以下の本を読んだ人へお薦めの実在する小説を7冊教えてください。
-                実在する本だけお薦めしてください。
-                タイトルと著者名だけ返してください。
-                返答は日本語でお願いします。              
-                返すときは「タイトル,著者名,タイトル,著者名,・・・」といった形式で返してください。これ以外の文字などは含めないでください。
-                下記の本はお薦めとしては選ばないで下さい。#{title_authors}"
-  
+    #CohereAPIで読書履歴からお薦め本を検索
     cohere_service = CohereService.new
-    @books = cohere_service.search_books_by_ai(prompt)
-    books2 = @books.split(',')
-
-    @ai_books = RakutenBooksService.search_recommended_books_by_ai(books2)
-
+    @books = cohere_service.search_books_by_ai(title_authors)
+    
+    #検索結果を配列に格納し、RakutenBooksAPIで検索
+    @ai_books = RakutenBooksService.search_recommended_books_by_ai(@books)
+    
     #本を検索出来たらジャンルを検索する
     @ai_books = RakutenBooksService.search_genres(@ai_books)
     
