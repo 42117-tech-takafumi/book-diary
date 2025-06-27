@@ -138,6 +138,8 @@ class ReviewsController < ApplicationController
     
     #本を検索出来たらジャンルを検索する
     @ai_books = RakutenBooksService.search_genres(@ai_books)
+
+    render :recommend
     
   end
 

@@ -7,3 +7,8 @@
 <div class = "recommend_title">著者：<%= @most_frequent_author %>　のお薦め本</div>
   <%= render partial: "shared/recommend_book", locals: { books: @author_books } %>
 <% end %>
+
+<% if @ai_books.present? %>
+<div class = "recommend_title">AIがお薦めする本</div>
+  <%= render partial: "shared/recommend_book", locals: { books: @ai_books } %>
+<% end %>
