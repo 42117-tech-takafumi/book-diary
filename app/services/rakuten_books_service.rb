@@ -101,37 +101,45 @@ class RakutenBooksService
 
   #AIの検索結果から該当する本を検索するメソッド
   def self.search_recommended_books_by_ai(books)
-
-    search_books=""
-
-    books.each do |title, author|
-      title_query = "&title=#{CGI.escape(title)}"
-      author_query = "&author=#{CGI.escape(author)}"
-
-      #入力された情報を元に本を検索し、返ってきたデータをJSON形式で受け取る
-      query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
-      url = URI(query)
-      response = Net::HTTP.get(url)
-      book = JSON.parse(response)["Items"] || []
-
-      #ヒットしなかったらタイトルのみで検索しなおす
-      if book.blank?
-        query = "#{BOOK_BASE_URL}?format=json#{title_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
-        url = URI(query)
-        response = Net::HTTP.get(url)
-        book = JSON.parse(response)["Items"] || []
-      end
-
-      sleep(0.5)
-
-      if search_books.blank? && !book.blank?
-        search_books = book
-      elsif !book.blank?
-        search_books << book[0]
-      end
-      
-    end
+    search_books = []   #お薦め本を格納する配列
+    threads = []        #スレッド用配列
+    mutex = Mutex.new   #排他ロック用オブジェクト（複数スレッドがキャッシュへ同時に書き込まないようにする）
    
+    books.each do |title, author|
+      threads << Thread.new do begin
+          
+          title_query = "&title=#{CGI.escape(title)}"
+          author_query = "&author=#{CGI.escape(author)}"
+
+          #タイトルと著者名で検索
+          query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+          url = URI(query)
+          response = Net::HTTP.get(url)
+          book = JSON.parse(response)["Items"] || []
+  
+          #ヒットしなかったらタイトルのみで再検索
+          if book.blank?
+            query = "#{BOOK_BASE_URL}?format=json#{title_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+            url = URI(query)
+            response = Net::HTTP.get(url)
+            book = JSON.parse(response)["Items"] || []
+          end
+  
+          unless book.blank?
+            #mutexで複数のスレッドが同時にキャッシュへ書き込むのを防止
+            mutex.synchronize { search_books << book[0] }
+          end
+
+        rescue => e
+          Rails.logger.error("楽天ブックスAPIエラー: #{e.message}")
+        end
+
+      end
+    end
+    
+    #後続処理で不具合が起きないように全スレッドの処理が終わるのを待つ
+    threads.each(&:join)
+
     return search_books
 
   end
