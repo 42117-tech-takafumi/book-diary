@@ -104,13 +104,13 @@ class RakutenBooksService
     search_books = []   #お薦め本を格納する配列
     threads = []        #スレッド用配列
     mutex = Mutex.new   #排他ロック用オブジェクト（複数スレッドがキャッシュへ同時に書き込まないようにする）
-   
-    books.each do |title, author|
+
+    books.each_slice(2) do |title, author|
       threads << Thread.new do begin
           
           title_query = "&title=#{CGI.escape(title)}"
           author_query = "&author=#{CGI.escape(author)}"
-
+        
           #タイトルと著者名で検索
           query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
           url = URI(query)
