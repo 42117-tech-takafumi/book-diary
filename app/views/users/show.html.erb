@@ -3,9 +3,11 @@
     <div>
       <%= link_to "読書履歴からお薦めの本を検索", recommend_reviews_path, class: "user_show_link" %>
       <%= link_to "AIを使って読書履歴からお薦めの本を検索", recommend_by_ai_reviews_path, class: "user_show_link" %>
+      <%= link_to "ユーザー情報の変更", edit_user_registration_path, class: "user_show_link" %>
     </div>
   <% else %>
     <div>あなたが投稿した感想はまだありません。</div>
+    <%= link_to "ユーザー情報の変更", edit_user_registration_path, class: "user_show_link" %>
   <% end %>
 
   <% @reviews.each do |review| %>
