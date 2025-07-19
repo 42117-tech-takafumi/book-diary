@@ -3,7 +3,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   #アソシエーション
-  has_many :reviews
+  has_many :reviews, dependent: :destroy
 
   #ヴァリデーション
   validates :nickname, presence: true
