@@ -154,6 +154,10 @@
   cursor: pointer;
 }
 
+.register-red-btn:hover {
+  background-color: #b71c1c; /* ホバー時の色 */
+}
+
 .register-info {
   margin: 30px 180px 0 0;
   color: #0099e8;

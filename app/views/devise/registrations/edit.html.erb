@@ -29,7 +29,7 @@
   <div class="form-group">
     <div class='form-text-wrap'>
       <label class="form-text">
-        <%= f.label :password, '新しいパスワード（変更しない場合は空欄のまま）' %>
+        <%= f.label :password, '新しいパスワード' %>
       </label>
     </div>
     <%= f.password_field :password, autocomplete: "new-password" ,placeholder:"6文字以上の半角英数字"%>
@@ -58,5 +58,10 @@
   </div>
 
 <% end %>
+
+<div class='register-btn'>
+  <div class="form-text">アカウントの削除はこちら</div>
+  <%= button_to "アカウントを削除する", registration_path(resource_name), data: { turbo_confirm: "本当に削除しますか？" }, method: :delete ,class:"register-red-btn"%>
+</div>
 
 </div>
