@@ -7,7 +7,9 @@ class Tag < ActiveHash::Base
     { id: 5, name: 'エッセイ' },
     { id: 6, name: 'ロマンス' },
     { id: 7, name: 'ファンタジー' },
-    { id: 8, name: 'ノンフィクション' }
+    { id: 8, name: 'ノンフィクション' },
+    { id: 9, name: '歴史' },
+    { id: 10, name: '児童書' }
   ]
 
   include ActiveHash::Associations
