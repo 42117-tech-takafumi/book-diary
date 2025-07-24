@@ -186,6 +186,12 @@ class ReviewsController < ApplicationController
     elsif most_frequent_tag == 8 #ノンフィクション
       most_frequent_my_genre = "001004004001"
       @book_genre_name = "ノンフィクション"
+    elsif most_frequent_tag == 9 #歴史
+      most_frequent_my_genre = "001008005"
+      @book_genre_name = "歴史"
+    elsif most_frequent_tag == 10 #児童書
+      most_frequent_my_genre = "001003001"
+      @book_genre_name = "児童書"
     end
 
     return most_frequent_my_genre
