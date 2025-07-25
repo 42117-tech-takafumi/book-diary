@@ -92,7 +92,7 @@ class ReviewsController < ApplicationController
     #タグ、著者を抽出し、配列に格納
     all_tags = @reviews.pluck(:tag_id1, :tag_id2).flatten.compact
     all_authors = @reviews.pluck(:author).flatten.compact
-    all_authors = all_authors.flat_map { |author| author.sub(/\/.*/, '')   }
+    all_authors = all_authors.reject { |a| a.include?("著者無し") }.flat_map { |author| author.sub(/\/.*/, '') }
 
     #タグ、著者を数が多い順に並び替え
     tag_counts = all_tags.group_by(&:itself).transform_values(&:size).sort_by { |_, count| -count }
