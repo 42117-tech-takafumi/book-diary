@@ -36,7 +36,14 @@ class RakutenBooksService
     page = parsed_response["page"].to_i
     total_pages = (total_hits.to_i/30).ceil + 1
     books = JSON.parse(response)["Items"] || []
-  
+
+    # 著者名が空白の本がある場合は著者名に「著者無し」と入れる
+    books.each_with_index do |book, i|
+      if book["Item"]["author"].blank?
+        books[i]["Item"]["author"] = "著者無し"
+      end
+    end
+
     return books,total_hits,page,total_pages
 
   end
