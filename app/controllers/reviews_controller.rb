@@ -12,14 +12,14 @@ class ReviewsController < ApplicationController
   def new
     
     @review = Review.new
-    @review.title = params["book"]["Item"]["title"]
-    @review.image_url = params["book"]["Item"]["largeImageUrl"]
-    @review.author = params["book"]["Item"]["author"]
-    @review.publisher_name = params["book"]["Item"]["publisherName"]
-    @review.isbn = params["book"]["Item"]["isbn"]
-    @review.books_genre_id = params["book"]["Item"]["booksGenreId"]
-    @review.books_genre_name = params["book"]["Item"]["booksGenreName"]
-    @review.item_caption = params["book"]["Item"]["itemCaption"]
+    @review.title = params["title"]
+    @review.image_url = params["largeImageUrl"]
+    @review.author = params["author"]
+    @review.publisher_name = params["publisherName"]
+    @review.isbn = params["isbn"]
+    @review.books_genre_id = params["booksGenreId"]
+    @review.books_genre_name = params["booksGenreName"]
+    @review.item_caption = params["itemCaption"]
     
   end
 

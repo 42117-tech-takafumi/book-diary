@@ -43,7 +43,7 @@ class RakutenBooksService
         books[i]["Item"]["author"] = "著者無し"
       end
     end
-
+    
     return books,total_hits,page,total_pages
 
   end
