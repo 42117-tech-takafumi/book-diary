@@ -66,9 +66,9 @@ class ReviewsController < ApplicationController
     
     #入力値に誤りがある場合はエラーメッセージを作成
     if @search_params[:title_query].blank? && @search_params[:author_query].blank? && @search_params[:isbn_query].blank?
-      @error_message = "Please enter a value for either the Title, Author, or Isbn."
+      @error_message = "タイトル・著者・isbnのいずれかを入力してください"
     elsif @search_params[:isbn_query].present? && !@search_params[:isbn_query].match(/^\d{10}|\d{13}$/)
-      @error_message = "Isbn must be 10 or 13 digits of half-width numbers for the Isbn."
+      @error_message = "isbnは10桁または13桁の半角数字で入力してください"
     else
       #本を検索する
       book_search = RakutenBooksService.search_books(@search_params) 

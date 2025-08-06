@@ -78,3 +78,6 @@ gem 'pry-rails'
 gem 'devise'
 gem 'active_hash'
 gem 'httparty'
+
+#日本語に対応するgem
+gem 'rails-i18n'
