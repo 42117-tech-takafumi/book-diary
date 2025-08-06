@@ -15,7 +15,7 @@
   <% end %>
   
   <div class = "review_item" >
-    <div>〇あなたが思ったジャンル1</div>
+    <div>〇あなたが思ったジャンル1　※必須</div>
     <%= f.collection_select(:tag_id1, Tag.all, :id, :name, { selected: @review.tag_id1 }, {class:"genre-select"} ) %>
   </div>
 
@@ -30,7 +30,7 @@
   </div>
 
   <div class = "review_item">
-    <div>〇感想</div>
+    <div>〇感想　※必須</div>
     <%= f.text_area :comment, placeholder:"感想" ,rows:"7" ,maxlength:"500" ,value: @review.comment %>
   </div>
 

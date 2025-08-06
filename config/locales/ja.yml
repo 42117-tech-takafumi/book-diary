@@ -1,0 +1,8 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        nickname: ニックネーム
+      review:
+        comment: 感想
+        tag_id1: あなたが思ったジャンル1
