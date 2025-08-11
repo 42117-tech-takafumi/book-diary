@@ -4,5 +4,8 @@ ja:
       user:
         nickname: ニックネーム
       review:
+        title: タイトル
+        author: 著者
+        publisher_name: 出版社
         comment: 感想
         tag_id1: あなたが思ったジャンル1
