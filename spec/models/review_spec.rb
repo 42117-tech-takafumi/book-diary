@@ -26,37 +26,37 @@ RSpec.describe Review, type: :model do
       it 'titleが空では投稿できない' do
         @review.title=""
         @review.valid?
-        expect(@review.errors.full_messages).to include("Title can't be blank")
+        expect(@review.errors.full_messages).to include("タイトルを入力してください")
       end
       it 'authorが空では投稿できない' do
         @review.author=""
         @review.valid?
-        expect(@review.errors.full_messages).to include("Author can't be blank")
+        expect(@review.errors.full_messages).to include("著者を入力してください")
       end
       it 'publisher_nameが空では投稿できない' do
         @review.publisher_name=""
         @review.valid?
-        expect(@review.errors.full_messages).to include("Publisher name can't be blank")
+        expect(@review.errors.full_messages).to include("出版社を入力してください")
       end
       it 'tag_id1が空では投稿できない' do
         @review.tag_id1="1"
         @review.valid?
-        expect(@review.errors.full_messages).to include("Tag id1 can't be blank")
+        expect(@review.errors.full_messages).to include("あなたが思ったジャンル1を入力してください")
       end
       it 'commentが空では投稿できない' do
         @review.comment=""
         @review.valid?
-        expect(@review.errors.full_messages).to include("Comment can't be blank")
+        expect(@review.errors.full_messages).to include("感想を入力してください")
       end
       it 'ユーザーが紐付いていなければ投稿できない' do
         @review.user = nil
         @review.valid?
-        expect(@review.errors.full_messages).to include('User must exist')
+        expect(@review.errors.full_messages).to include('Userを入力してください')
       end
       it 'user_idとisbnが同じデータが既にある場合は投稿できない' do
         @review.isbn="9876543210"
         @review.valid?
-        expect(@review.errors.full_messages).to include('Isbn is duplicated. You have already written the review for this book.')
+        expect(@review.errors.full_messages).to include('Isbnが重複しています。あなたは既にこのIsbnの書籍の感想を投稿しています')
       end
     end
   end

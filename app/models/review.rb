@@ -9,8 +9,8 @@ class Review < ApplicationRecord
 
   #ヴァリデーション
   validates :title, :author, :publisher_name, :comment, presence: true
-  validates :isbn, uniqueness: { scope: :user_id, message: "が重複しています。あなたは既にこのISBNの書籍の感想を投稿しています。" }
+  validates :isbn, uniqueness: { scope: :user_id, message: "が重複しています。あなたは既にこのIsbnの書籍の感想を投稿しています" }
 
-  validates :tag_id1,numericality: { other_than: 1, message: "は必ず選んで下さい"}
+  validates :tag_id1,numericality: { other_than: 1, message: "を入力してください"}
 
 end
