@@ -20,6 +20,8 @@ class ReviewsController < ApplicationController
     @review.books_genre_id = params["booksGenreId"]
     @review.books_genre_name = params["booksGenreName"]
     @review.item_caption = params["itemCaption"]
+
+    binding.pry
     
   end
 
