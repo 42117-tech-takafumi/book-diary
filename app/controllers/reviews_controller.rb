@@ -10,18 +10,26 @@ class ReviewsController < ApplicationController
   end
 
   def new
-    
-    @review = Review.new
-    @review.title = params["title"]
-    @review.image_url = params["largeImageUrl"]
-    @review.author = params["author"]
-    @review.publisher_name = params["publisherName"]
-    @review.isbn = params["isbn"]
-    @review.books_genre_id = params["booksGenreId"]
-    @review.books_genre_name = params["booksGenreName"]
-    @review.item_caption = params["itemCaption"]
 
-    binding.pry
+    search_params = {isbn_query: params["book_isbn"],page:params[:page]}
+    book_search = RakutenBooksService.search_books(search_params) 
+    @books = book_search[0]
+    @book_counts = {total_hits:book_search[1],page:book_search[2],total_pages:book_search[3]}
+
+    #本を検索出来たらジャンルを検索する
+    if @books.present?
+      @books = RakutenBooksService.search_genres(@books)
+    end
+
+    @review = Review.new
+    @review.title = @books[0]["Item"]["title"]
+    @review.image_url = @books[0]["Item"]["largeImageUrl"]
+    @review.author = @books[0]["Item"]["author"]
+    @review.publisher_name = @books[0]["Item"]["publisherName"]
+    @review.isbn = @books[0]["Item"]["isbn"]
+    @review.books_genre_id = @books[0]["Item"]["booksGenreId"]
+    @review.books_genre_name = params["booksGenreName"]
+    @review.item_caption = @books[0]["Item"]["itemCaption"]
     
   end
 

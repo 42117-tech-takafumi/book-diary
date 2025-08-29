@@ -44,44 +44,27 @@
   <% @books.each do |book| %>
     <% unless @isbn_list.include?(book["Item"]["isbn"]) %>
       <div class = "index_book" >
-        
           <%= link_to new_review_path(
-            title: book["Item"]["title"],
-            author: book["Item"]["author"],
-            isbn: book["Item"]["isbn"],
-            largeImageUrl: book["Item"]["largeImageUrl"],
-            publisherName: book["Item"]["publisherName"],
-            booksGenreId: book["Item"]["booksGenreId"],
             booksGenreName: book["Item"]["booksGenreName"],
-            itemCaption: truncate(book["Item"]["itemCaption"], length: 110),
             title_query: @search_params[:title_query],
             author_query: @search_params[:author_query],
             isbn_query: @search_params[:isbn_query],
+            book_isbn: book["Item"]["isbn"],
             page: @search_params[:page]
           ), class: "index_book_img_link" do %>
             <img src="<%= book["Item"]["largeImageUrl"] %>" alt="Book Cover" class="index_book_img">
           <% end %>
-        
-        
         <div class = "index_book_info" >
-          
             <h2>
               <%= link_to book["Item"]["title"], new_review_path(
-                title: book["Item"]["title"],
-                author: book["Item"]["author"],
-                isbn: book["Item"]["isbn"],
-                largeImageUrl: book["Item"]["largeImageUrl"],
-                publisherName: book["Item"]["publisherName"],
-                booksGenreId: book["Item"]["booksGenreId"],
                 booksGenreName: book["Item"]["booksGenreName"],
-                itemCaption: truncate(book["Item"]["itemCaption"], length: 110),
                 title_query: @search_params[:title_query],
                 author_query: @search_params[:author_query],
                 isbn_query: @search_params[:isbn_query],
+                book_isbn: book["Item"]["isbn"],
                 page: @search_params[:page]
               ),class: "index_book_link" %>
             </h2>
-          
           <p>著者: <%= book["Item"]["author"] %></p>
           <p>出版社: <%= book["Item"]["publisherName"] %></p>
           <p>isbn: <%= book["Item"]["isbn"] %></p>
