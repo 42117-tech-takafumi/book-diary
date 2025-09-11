@@ -10,8 +10,10 @@ class ReviewsController < ApplicationController
   end
 
   def new
-
+    #検索条件を変数に格納
     search_params = {isbn_query: params["book_isbn"],page:params[:page]}
+
+    #本を検索する
     book_search = RakutenBooksService.search_books(search_params) 
     @books = book_search[0]
     @book_counts = {total_hits:book_search[1],page:book_search[2],total_pages:book_search[3]}
@@ -133,7 +135,7 @@ class ReviewsController < ApplicationController
     #ユーザーが投稿した感想を全て取得
     @reviews = Review.where(user_id: current_user.id)
 
-    #今で読んだ本のタイトルとその著者名
+    #今で読んだ本のタイトルとその著者名を変数に格納
     title_authors = ""
     @reviews.each do |review|
       title_authors = title_authors + ("・タイトル：#{review.title}、著者：#{review.author}")
