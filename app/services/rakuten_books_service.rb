@@ -114,7 +114,6 @@ class RakutenBooksService
 
     books.each_slice(2) do |title, author|
       threads << Thread.new do begin
-          
           title_query = "&title=#{CGI.escape(title)}"
           author_query = "&author=#{CGI.escape(author)}"
         

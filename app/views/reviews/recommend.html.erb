@@ -12,3 +12,8 @@
 <div class = "recommend_title">AIがお薦めする本</div>
   <%= render partial: "shared/recommend_book", locals: { books: @ai_books } %>
 <% end %>
+
+<div class = "recommend_page_back">
+    <%= link_to "マイページへ戻る", user_path(current_user.id) %>
+    <%= link_to "検索画面へ戻る", root_path %>
+</div>
