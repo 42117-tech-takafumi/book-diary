@@ -24,15 +24,22 @@ class CohereService
     prompt = BASE_PROMPT + title_authors
 
     body = {
-      model: "command-r-plus",
+      model: "command-r-plus-08-2024",
       message: prompt,
       temperature: 0.3,
       return_chatlog: false
     }
 
     response = self.class.post("/chat", headers: @headers, body: body.to_json, timeout: 40)
-    books_text = response.parsed_response["text"].gsub("，", ",") #念のため大文字「，」を小文字に変換
-    books_list = books_text.split(',').each_slice(2).map { |title, author| { title: title.strip, author: author.strip } }
+    
+    #念のため大文字「，」を小文字に変換
+    books_text = response.parsed_response["text"].gsub("，", ",")
+    
+    books_list = books_text.split("\n").map do |line|
+      _number, rest = line.split(". ", 2)   # 先頭の番号を捨てる
+      title, author = rest.split(",", 2)    # タイトルと著者に分割
+      { title: title.strip, author: author.strip }
+    end
 
     return rank_books_by_similarity(title_authors, books_list)
 
