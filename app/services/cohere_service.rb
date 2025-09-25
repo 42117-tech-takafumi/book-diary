@@ -9,7 +9,7 @@ class CohereService
     実在する本だけお薦めしてください。
     タイトルと著者名だけ返してください。
     返答は日本語でお願いします。               
-    返すときは「タイトル,著者名,タイトル,著者名・・・」といった形式で返してください。これ以外の文字などは含めないでください。
+    返すときは「タイトル,著者名,タイトル,著者名・・・」といった形式で返してください。これ以外の文字は含めないでください。
     下記の本はお薦めとしては選ばないで下さい。"
 
   def initialize
@@ -20,7 +20,7 @@ class CohereService
   end
 
   def search_books_by_ai(title_authors)
-    #検索テキストに読書履歴の本は検索しないようにする
+    #検索テキストに読書履歴の本は検索しない様にする
     prompt = BASE_PROMPT + title_authors
 
     body = {
@@ -32,12 +32,12 @@ class CohereService
 
     response = self.class.post("/chat", headers: @headers, body: body.to_json, timeout: 40)
     
-    #念のため大文字「，」を小文字に変換
+    #念のため大文字の「，」を小文字に変換する
     books_text = response.parsed_response["text"].gsub("，", ",")
     
     books_list = books_text.split("\n").map do |line|
-      _number, rest = line.split(". ", 2)   # 先頭の番号を捨てる
-      title, author = rest.split(",", 2)    # タイトルと著者に分割
+      _number, rest = line.split(". ", 2)   # 先頭の番号を削除する
+      title, author = rest.split(",", 2)    # タイトルと著者に分ける
       { title: title.strip, author: author.strip }
     end
 

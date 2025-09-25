@@ -146,6 +146,7 @@ class ReviewsController < ApplicationController
     @books = cohere_service.search_books_by_ai(title_authors)
 
     #検索結果を配列に格納し、RakutenBooksAPIで検索
+    
     @ai_books = RakutenBooksService.search_recommended_books_by_ai(@books)
     
     #本を検索出来たらジャンルを検索する
