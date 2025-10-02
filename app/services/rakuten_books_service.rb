@@ -109,8 +109,8 @@ class RakutenBooksService
   #AIの検索結果から該当する本を検索するメソッド
   def self.search_recommended_books_by_ai(books)
     search_books = []   #お薦め本を格納する配列
-    threads = []        #スレッド用配列
-    mutex = Mutex.new   #排他ロック用オブジェクト（複数スレッドがキャッシュへ同時に書き込まないようにする）
+    threads = []        #スレッド用の配列
+    mutex = Mutex.new   #排他ロック用のオブジェクト（複数スレッドがキャッシュへ同時に書き込まないようにする）
 
     books.each_slice(2) do |title, author|
       threads << Thread.new do begin
@@ -123,7 +123,7 @@ class RakutenBooksService
           response = Net::HTTP.get(url)
           book = JSON.parse(response)["Items"] || []
   
-          #ヒットしなかったらタイトルのみで再検索
+          #ヒットしなかった場合はタイトルのみで再検索
           if book.blank?
             query = "#{BOOK_BASE_URL}?format=json#{title_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
             url = URI(query)
@@ -154,8 +154,8 @@ class RakutenBooksService
   def self.search_genres(books)
     genre_id_set = Set.new  #重複無しでジャンルIDを格納するためのset型オブジェクト
     genre_cache = {}        #キャッシュ用のハッシュ
-    thread_count = 5        #一度に検索する件数
-    threads = []            #スレッド用配列
+    thread_count = 5        #一度に検索する件数（スレッドの数）
+    threads = []            #スレッド用の配列
     mutex = Mutex.new       #排他ロック用オブジェクト（複数スレッドがキャッシュへ同時に書き込まないようにする）
   
     books.each do |book|
@@ -176,7 +176,7 @@ class RakutenBooksService
       threads << Thread.new do
         ids_slice.each do |genre_id|
           
-          #ジャンルidがキャッシュに無かったらRakutenBooksAPIで検索し、新しくキャッシュに登録する
+          #ジャンルidがキャッシュに無かったらRakutenBooksAPIで検索し、新しくキャッシュに登録
           genre_name = Rails.cache.fetch("genre_#{genre_id}", expires_in: 1.day) do
             url = URI("#{GENRE_BASE_URL}#{CGI.escape(genre_id)}&applicationId=#{ENV['RAKUTEN_APP_ID']}")
             response = Net::HTTP.get(url)
