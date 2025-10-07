@@ -31,13 +31,13 @@ class RakutenBooksService
     response = Net::HTTP.get(url)
     parsed_response = JSON.parse(response) 
 
-    # 全ヒット件数を取得
+    #全ヒット件数を取得
     total_hits = parsed_response["count"] || parsed_response["hits"]
     page = parsed_response["page"].to_i
     total_pages = (total_hits.to_i/30).ceil + 1
     books = JSON.parse(response)["Items"] || []
 
-    # 著者名が空白の本がある場合は著者名に「著者無し」と入れる
+    #著者名が空白の本がある場合は著者名に「著者無し」と入れる
     books.each_with_index do |book, i|
       if book["Item"]["author"].blank?
         books[i]["Item"]["author"] = "著者無し"
@@ -50,7 +50,7 @@ class RakutenBooksService
 
   #読書履歴からお薦めの本を検索するメソッド
   def self.search_recommended_books(most_frequent_my_genre,most_frequent_author)
-    #ファンタジーのキーワードリスト
+    #ファンタジージャンルのキーワードリスト
     fantasy_keywords = ["ファンタジー","魔法", "勇者", "ドラゴン", "異世界", "精霊", "呪文", "魔王", "魔導", "剣士", "魔女"]
     author_query = "&author=#{CGI.escape(most_frequent_author)}"
     genre_query = "&booksGenreId=#{CGI.escape(most_frequent_my_genre)}"
@@ -104,13 +104,14 @@ class RakutenBooksService
     end
     
     return author_books,genre_books
+
   end
 
   #AIの検索結果から該当する本を検索するメソッド
   def self.search_recommended_books_by_ai(books)
     search_books = []   #お薦め本を格納する配列
     threads = []        #スレッド用の配列
-    mutex = Mutex.new   #排他ロック用のオブジェクト（複数スレッドがキャッシュへ同時に書き込まないようにする）
+    mutex = Mutex.new   #排他ロック用のオブジェクト（複数スレッドをキャッシュへ同時に書き込まないようにする）
 
     books.each_slice(2) do |title, author|
       threads << Thread.new do begin
