@@ -109,46 +109,36 @@ class RakutenBooksService
 
   #AIの検索結果から該当する本を検索するメソッド
   def self.search_recommended_books_by_ai(books)
-    search_books = []   #お薦め本を格納する配列
-    threads = []        #スレッド用の配列
-    mutex = Mutex.new   #排他ロック用のオブジェクト（複数スレッドをキャッシュへ同時に書き込まないようにする）
-
+    search_books = [] #お薦め本を格納する配列
+  
     books.each_slice(2) do |title, author|
-      threads << Thread.new do begin
-          title_query = "&title=#{CGI.escape(title)}"
-          author_query = "&author=#{CGI.escape(author)}"
-        
-          #タイトルと著者名で検索
-          query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
-          url = URI(query)
-          response = Net::HTTP.get(url)
-          book = JSON.parse(response)["Items"] || []
-  
-          #ヒットしなかった場合はタイトルのみで再検索
-          if book.blank?
-            query = "#{BOOK_BASE_URL}?format=json#{title_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
-            url = URI(query)
-            response = Net::HTTP.get(url)
-            book = JSON.parse(response)["Items"] || []
-          end
-  
-          unless book.blank?
-            #mutexで複数のスレッドが同時にキャッシュへ書き込むのを防止
-            mutex.synchronize { search_books << book[0] }
-          end
+      sleep(rand(0.2..0.5))
 
-        rescue => e
-          Rails.logger.error("楽天ブックスAPIエラー: #{e.message}")
-        end
+      title_query = "&title=#{CGI.escape(title)}"
+      author_query = "&author=#{CGI.escape(author)}"
 
+      #タイトルと著者名で検索
+      query = "#{BOOK_BASE_URL}?format=json#{title_query}#{author_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+      url = URI(query)
+      response = Net::HTTP.get(url)
+      book = JSON.parse(response)["Items"] || []
+
+      #ヒットしなかった場合はタイトルのみで再検索
+      if book.blank?
+        query = "#{BOOK_BASE_URL}?format=json#{title_query}&hits=1&sort=reviewCount&applicationId=#{ENV['RAKUTEN_APP_ID']}"
+        url = URI(query)
+        response = Net::HTTP.get(url)
+        book = JSON.parse(response)["Items"] || []
       end
+
+      #ヒットした場合は配列に格納
+      unless book.blank? 
+        search_books << book[0]
+      end
+
     end
-    
-    #後続処理で不具合が起きないように全スレッドの処理が終わるのを待つ
-    threads.each(&:join)
-
+  
     return search_books
-
   end
 
   #本のジャンルを検索するメソッド
