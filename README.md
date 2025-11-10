@@ -51,16 +51,16 @@ Basic認証アカウント：admin42117
 
 ## 実装した機能についての画像やGIFおよびその説明
 - 本を検索する機能<br>
-<img src="https://i.gyazo.com/492a0f81814a7d061183b8aa0df0e8e1.gif" width="410" />
+<img src="https://i.gyazo.com/caf23ade1412469607c9fba6b556af47.gif" width="410" />
 
 - 本の感想を投稿する機能<br>
-<img src="https://i.gyazo.com/d242fcdda662282b882599d29889771d.gif" width="410" />
+<img src="https://i.gyazo.com/78bc1d23983396af7e5e32b103e70914.gif" width="410" />
 
 - 読書履歴からお薦めの本を検索する機能<br>
-<img src="https://i.gyazo.com/1984ac33fedffe6e5c2894f8279dc2bc.gif" width="410" />
+<img src="https://i.gyazo.com/0f93dfa4f7a319fc7543eea964f14371.gif" width="410" />
 
 - AIを使った読書履歴からお薦めの本を検索する機能<br>
-<img src="https://i.gyazo.com/f4ecca4c4c6c5b9dcb397c2eb41c7430.gif" width="410" />
+<img src="https://i.gyazo.com/4fb6f2afab14ba4af8aa039f118815a9.gif" width="410" />
 
 ## 実装予定の機能
 - AIを使った読書履歴からお薦めの本を検索する機能の検索速度の向上
